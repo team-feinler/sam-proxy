@@ -1,3 +1,4 @@
+require('newrelic');
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
@@ -6,8 +7,8 @@ const bodyParser = require('body-parser')
 const port = process.env.PORT || 3000;
 const app = express();
 const hosts = require('./hosts');
-
 const morgan = require('morgan');
+
 app.use(morgan('dev'));
 app.use(cors());
 app.use(bodyParser.json());
@@ -25,7 +26,6 @@ app.get('/reviews/bundle', async (req, res) => {
 
 app.post('/review', async (req, res) => {
   try {
-    console.log(req.body)
     const { data } = await axios.post(`${hosts.reviews}/review`, req.body)
     res.status(201).send(data)
   } catch (err) {
