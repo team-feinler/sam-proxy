@@ -9,7 +9,7 @@ const app = express();
 const hosts = require('./hosts');
 const morgan = require('morgan');
 
-app.use(morgan('dev'));
+// app.use(morgan('dev'));
 app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static(`${__dirname}/../public`));

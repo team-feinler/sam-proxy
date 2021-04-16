@@ -3,18 +3,23 @@ config:
   http:
     timeout: 10
   phases:
-    - duration: 60
-      arrivalRate: 50
-      rampTo: 100
-    - duration: 60
-      arrivalRate: 100
-      rampTo: 200
-    - duration: 60
-      arrivalRate: 75
-      rampTo: 100
-    - duration: 300
-      arrivalRate: 100
-      rampTo: 200
+   - name: 'warm up'
+     duration: 60
+     arrivalRate: 1
+     rampTo: 50
+   - name: 'easy'
+     duration: 60
+     arrivalRate: 50
+   - name: 'medium'
+     duration: 60
+     arrivalRate: 100
+   - name: 'hard'
+     duration: 60
+     arrivalRate: 150
+   - name: 'cool down'
+     duration: 60
+     arrivalRate: 150
+     rampTo: 10
   processor: "./processor.js"
 
 scenarios:
@@ -23,14 +28,26 @@ scenarios:
     flow:
       - function: "generateProductId"
       - get:
-          url: "/{{ productId }}/"
+          url: "/Reviews/getReviews/{{ productId }}"
+      - get:
+          url: "/Reviews/getReviewSummary/{{ productId }}"
+      - get:
+          url: "/Reviews/getReviewsByFeature/{{ productId }}"
+      - get:
+          url: "/Reviews/getReviewExcerpts/{{ productId }}"
   - name: "View multiple product pages"
     weight: 15
     flow:
       - function: "generateProductId"
       - loop:
         - get:
-            url: "/{{ productId }}/"
+            url: "/Reviews/getReviews/{{ productId }}"
+        - get:
+            url: "/Reviews/getReviewSummary/{{ productId }}"
+        - get:
+            url: "/Reviews/getReviewsByFeature/{{ productId }}"
+        - get:
+            url: "/Reviews/getReviewExcerpts/{{ productId }}"
         count: 5
         think: 3
   - name: "View product page and leave review"
@@ -38,7 +55,13 @@ scenarios:
     flow:
       - function: "generateProductId"
       - get:
-          url: "/{{ productId }}/"
+          url: "/Reviews/getReviews/{{ productId }}"
+      - get:
+          url: "/Reviews/getReviewSummary/{{ productId }}"
+      - get:
+          url: "/Reviews/getReviewsByFeature/{{ productId }}"
+      - get:
+          url: "/Reviews/getReviewExcerpts/{{ productId }}"
       - think: 5
       - post:
           url: "/review"

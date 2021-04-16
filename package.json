@@ -10,7 +10,9 @@
   "scripts": {
     "start": "node server/index.js",
     "dev": "nodemon server/index.js",
-    "stress": "artillery run --output tests/report.json tests/proxy-test.yml"
+    "stress": "artillery run --output tests/report.json tests/proxy-test.yml",
+    "stress-get": "artillery run --output tests/report-get.json tests/proxy-get-test.yml",
+    "stress-post": "artillery run --output tests/report-post.json tests/proxy-post-test.yml"
   },
   "dependencies": {
     "axios": "^0.21.1",
